@@ -1,0 +1,250 @@
+package ui;
+
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.GraphicsEnvironment;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.io.File;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import java.awt.Color;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
+import javax.swing.JButton;
+import javax.swing.JTextField;
+
+import Database.DBConnection;
+
+public class AddDegree extends JFrame {
+
+    private static final long serialVersionUID = 1L;
+    private JPanel contentPane;
+    private JTextField txtProgramTitle;
+    private JTextField txtProgramCode;
+    private JTextField txtCollege;
+    private JTextField txtTotalUnits;
+    private JTextField txtDuration;
+
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    AddDegree frame = new AddDegree();
+                    frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public AddDegree() {
+        
+        try {
+            Font poppinsRegular = Font.createFont(Font.TRUETYPE_FONT, new File("src/fonts/Poppins-Regular.ttf")).deriveFont(22f);
+            Font poppinsMedium = Font.createFont(Font.TRUETYPE_FONT, new File("src/fonts/Poppins-Medium.ttf")).deriveFont(26f);
+            Font poppinsBold = Font.createFont(Font.TRUETYPE_FONT, new File("src/fonts/Poppins-Bold.ttf")).deriveFont(60f);
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(poppinsRegular);
+            ge.registerFont(poppinsMedium);
+            ge.registerFont(poppinsBold);
+        } catch (Exception e) {
+            System.out.println("Font loading failed, using default fonts.");
+        }
+
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setExtendedState(JFrame.MAXIMIZED_BOTH); 
+        contentPane = new JPanel();
+        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+        setContentPane(contentPane);
+        contentPane.setLayout(null);
+
+        
+        JPanel panel = new JPanel();
+        panel.setLayout(null);
+        panel.setBackground(new Color(26, 35, 126));
+        panel.setBounds(0, 0, 1920, 1080); 
+        contentPane.add(panel);
+
+        
+        JPanel panel_1 = new JPanel();
+        panel_1.setLayout(null);
+        panel_1.setBackground(Color.WHITE);
+        panel_1.setBounds(384, 162, 1152, 756); 
+        panel.add(panel_1);
+
+        
+        JLabel lblAddDegree = new JLabel("Add Program");
+        lblAddDegree.setHorizontalAlignment(SwingConstants.CENTER);
+        lblAddDegree.setForeground(new Color(26, 35, 126));
+        lblAddDegree.setFont(new Font("Bricolage Grotesque", Font.BOLD, 60));
+        lblAddDegree.setBounds(10, 53, 1132, 73);
+        panel_1.add(lblAddDegree);
+
+        
+        JLabel lblProgramTitle = new JLabel("Program Title");
+        lblProgramTitle.setHorizontalAlignment(SwingConstants.LEFT);
+        lblProgramTitle.setForeground(new Color(26, 35, 126));
+        lblProgramTitle.setFont(new Font("Bricolage Grotesque", Font.PLAIN, 30));
+        lblProgramTitle.setBounds(155, 155, 245, 59);
+        panel_1.add(lblProgramTitle);
+
+        txtProgramTitle = new JTextField();
+        txtProgramTitle.setHorizontalAlignment(SwingConstants.LEFT);
+        txtProgramTitle.setForeground(new Color(26, 35, 126));
+        txtProgramTitle.setFont(new Font("Bricolage Grotesque", Font.PLAIN, 30));
+        txtProgramTitle.setColumns(10);
+        txtProgramTitle.setBounds(410, 163, 696, 43);
+        panel_1.add(txtProgramTitle);
+
+        
+        JLabel lblProgramCode = new JLabel("Program Code");
+        lblProgramCode.setHorizontalAlignment(SwingConstants.LEFT);
+        lblProgramCode.setForeground(new Color(26, 35, 126));
+        lblProgramCode.setFont(new Font("Bricolage Grotesque", Font.PLAIN, 30));
+        lblProgramCode.setBounds(155, 224, 222, 59);
+        panel_1.add(lblProgramCode);
+
+        txtProgramCode = new JTextField();
+        txtProgramCode.setHorizontalAlignment(SwingConstants.LEFT);
+        txtProgramCode.setForeground(new Color(26, 35, 126));
+        txtProgramCode.setFont(new Font("Bricolage Grotesque", Font.PLAIN, 30));
+        txtProgramCode.setColumns(10);
+        txtProgramCode.setBounds(410, 232, 696, 43);
+        panel_1.add(txtProgramCode);
+
+        
+        JLabel lblCollege = new JLabel("College");
+        lblCollege.setHorizontalAlignment(SwingConstants.LEFT);
+        lblCollege.setForeground(new Color(26, 35, 126));
+        lblCollege.setFont(new Font("Bricolage Grotesque", Font.PLAIN, 30));
+        lblCollege.setBounds(155, 293, 245, 59);
+        panel_1.add(lblCollege);
+
+        txtCollege = new JTextField();
+        txtCollege.setHorizontalAlignment(SwingConstants.LEFT);
+        txtCollege.setForeground(new Color(26, 35, 126));
+        txtCollege.setFont(new Font("Bricolage Grotesque", Font.PLAIN, 30));
+        txtCollege.setColumns(10);
+        txtCollege.setBounds(410, 301, 696, 43);
+        panel_1.add(txtCollege);
+
+        
+        JLabel lblTotalUnits = new JLabel("Total Units");
+        lblTotalUnits.setHorizontalAlignment(SwingConstants.LEFT);
+        lblTotalUnits.setForeground(new Color(26, 35, 126));
+        lblTotalUnits.setFont(new Font("Bricolage Grotesque", Font.PLAIN, 30));
+        lblTotalUnits.setBounds(155, 361, 200, 59);
+        panel_1.add(lblTotalUnits);
+
+        txtTotalUnits = new JTextField();
+        txtTotalUnits.setHorizontalAlignment(SwingConstants.LEFT);
+        txtTotalUnits.setForeground(new Color(26, 35, 126));
+        txtTotalUnits.setFont(new Font("Bricolage Grotesque", Font.PLAIN, 30));
+        txtTotalUnits.setColumns(10);
+        txtTotalUnits.setBounds(410, 369, 696, 43);
+        panel_1.add(txtTotalUnits);
+
+        
+        JLabel lblDuration = new JLabel("Duration");
+        lblDuration.setHorizontalAlignment(SwingConstants.LEFT);
+        lblDuration.setForeground(new Color(26, 35, 126));
+        lblDuration.setFont(new Font("Bricolage Grotesque", Font.PLAIN, 30));
+        lblDuration.setBounds(155, 421, 200, 59);
+        panel_1.add(lblDuration);
+
+        txtDuration = new JTextField();
+        txtDuration.setHorizontalAlignment(SwingConstants.LEFT);
+        txtDuration.setForeground(new Color(26, 35, 126));
+        txtDuration.setFont(new Font("Bricolage Grotesque", Font.PLAIN, 30));
+        txtDuration.setColumns(10);
+        txtDuration.setBounds(410, 429, 696, 43);
+        panel_1.add(txtDuration);
+
+        
+        JButton btnCancel = new JButton("Cancel");
+        btnCancel.setOpaque(true);
+        btnCancel.setForeground(Color.WHITE);
+        btnCancel.setFont(new Font("Bricolage Grotesque", Font.BOLD, 30));
+        btnCancel.setFocusPainted(false);
+        btnCancel.setContentAreaFilled(true);
+        btnCancel.setBorderPainted(false);
+        btnCancel.setBackground(new Color(26, 35, 126));
+        btnCancel.setBounds(338, 533, 241, 52);
+        btnCancel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                dispose();
+                new DegreeManagement().setVisible(true);
+            }
+        });
+        panel_1.add(btnCancel);
+
+        JButton btnSubmit = new JButton("Submit");
+        btnSubmit.setOpaque(true);
+        btnSubmit.setForeground(Color.WHITE);
+        btnSubmit.setFont(new Font("Bricolage Grotesque", Font.BOLD, 30));
+        btnSubmit.setFocusPainted(false);
+        btnSubmit.setContentAreaFilled(true);
+        btnSubmit.setBorderPainted(false);
+        btnSubmit.setBackground(new Color(26, 35, 126));
+        btnSubmit.setBounds(660, 533, 241, 52);
+        panel_1.add(btnSubmit);
+
+        
+        btnSubmit.addActionListener(e -> {
+            
+            saveDegree();
+        });
+
+        
+        addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent e) {
+                int width = getWidth();
+                int height = getHeight();
+                panel.setBounds(0, 0, width, height);
+                int panelWidth = (int) (width * 0.8);
+                int panelHeight = (int) (height * 0.85);
+                int panelX = (width - panelWidth) / 2;
+                int panelY = (height - panelHeight) / 2;
+                panel_1.setBounds(panelX, panelY, panelWidth, panelHeight);
+            }
+        });
+    }
+
+    private void saveDegree() {
+        String programTitle = txtProgramTitle.getText().trim();
+        String programCode = txtProgramCode.getText().trim();
+        String college = txtCollege.getText().trim();
+        String totalUnits = txtTotalUnits.getText().trim();
+        String duration = txtDuration.getText().trim();
+
+        
+        if (programTitle.isEmpty() || programCode.isEmpty() || college.isEmpty() || totalUnits.isEmpty() || duration.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please fill in all fields.", "Input Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        
+        try (Connection conn = DBConnection.getConnection();
+             Statement stmt = conn.createStatement()) {
+
+            String sql = String.format("INSERT INTO programs (program_code, program_name, department, total_units, program_duration) VALUES ('%s', '%s', '%s', %s, %s)",
+                    programCode, programTitle, college, totalUnits, duration);
+            stmt.executeUpdate(sql);
+            JOptionPane.showMessageDialog(this, "Degree added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            dispose(); 
+            new DegreeManagement().setVisible(true); 
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error saving degree: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+}

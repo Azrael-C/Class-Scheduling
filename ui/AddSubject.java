@@ -1,0 +1,278 @@
+package ui;
+
+import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.sql.Connection;
+import java.io.File;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import Database.DBConnection;
+
+public class AddSubject extends JFrame {
+
+    private static final long serialVersionUID = 1L;
+    private JPanel contentPane;
+    private JTextField txtSubjectName;
+    private JTextField txtSubjectCode;
+    private JTextField txtUnits;
+    private JTextField txtPrerequisite;
+    private JTextField txtCategory;
+    private JComboBox<String> cmbProgram; 
+
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    AddSubject frame = new AddSubject();
+                    frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public AddSubject() {
+        
+        try {
+            Font poppinsRegular = Font.createFont(Font.TRUETYPE_FONT, new File("src/fonts/Poppins-Regular.ttf")).deriveFont(22f);
+            Font poppinsMedium = Font.createFont(Font.TRUETYPE_FONT, new File("src/fonts/Poppins-Medium.ttf")).deriveFont(26f);
+            Font poppinsBold = Font.createFont(Font.TRUETYPE_FONT, new File("src/fonts/Poppins-Bold.ttf")).deriveFont(60f);
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(poppinsRegular);
+            ge.registerFont(poppinsMedium);
+            ge.registerFont(poppinsBold);
+        } catch (Exception e) {
+            System.out.println("Font loading failed, using default fonts.");
+        }
+
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setExtendedState(JFrame.MAXIMIZED_BOTH); 
+        contentPane = new JPanel();
+        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+        setContentPane(contentPane);
+        contentPane.setLayout(null);
+
+        
+        JPanel panel = new JPanel();
+        panel.setLayout(null);
+        panel.setBackground(new Color(26, 35, 126));
+        panel.setBounds(0, 0, 1920, 1080); 
+        contentPane.add(panel);
+
+        
+        JPanel panel_1 = new JPanel();
+        panel_1.setLayout(null);
+        panel_1.setBackground(Color.WHITE);
+        panel_1.setBounds(384, 162, 1152, 756); 
+        panel.add(panel_1);
+
+        
+        JLabel lblAddSubject = new JLabel("Add Subject");
+        lblAddSubject.setHorizontalAlignment(SwingConstants.CENTER);
+        lblAddSubject.setForeground(new Color(26, 35, 126));
+        lblAddSubject.setFont(new Font("Bricolage Grotesque", Font.BOLD, 60));
+        lblAddSubject.setBounds(10, 53, 1132, 73);
+        panel_1.add(lblAddSubject);
+
+        
+        JLabel lblSubjectName = new JLabel("Subject Name");
+        lblSubjectName.setHorizontalAlignment(SwingConstants.LEFT);
+        lblSubjectName.setForeground(new Color(26, 35, 126));
+        lblSubjectName.setFont(new Font("Bricolage Grotesque", Font.PLAIN, 30));
+        lblSubjectName.setBounds(155, 155, 245, 59);
+        panel_1.add(lblSubjectName);
+
+        txtSubjectName = new JTextField();
+        txtSubjectName.setHorizontalAlignment(SwingConstants.LEFT);
+        txtSubjectName.setForeground(new Color(26, 35, 126));
+        txtSubjectName.setFont(new Font("Bricolage Grotesque", Font.PLAIN, 30));
+        txtSubjectName.setColumns(10);
+        txtSubjectName.setBounds(410, 163, 696, 43);
+        panel_1.add(txtSubjectName);
+
+        
+        JLabel lblSubjectCode = new JLabel("Subject Code");
+        lblSubjectCode.setHorizontalAlignment(SwingConstants.LEFT);
+        lblSubjectCode.setForeground(new Color(26, 35, 126));
+        lblSubjectCode.setFont(new Font("Bricolage Grotesque", Font.PLAIN, 30));
+        lblSubjectCode.setBounds(155, 224, 222, 59);
+        panel_1.add(lblSubjectCode);
+
+        txtSubjectCode = new JTextField();
+        txtSubjectCode.setHorizontalAlignment(SwingConstants.LEFT);
+        txtSubjectCode.setForeground(new Color(26, 35, 126));
+        txtSubjectCode.setFont(new Font("Bricolage Grotesque", Font.PLAIN, 30));
+        txtSubjectCode.setColumns(10);
+        txtSubjectCode.setBounds(410, 232, 696, 43);
+        panel_1.add(txtSubjectCode);
+
+        
+        JLabel lblUnits = new JLabel("Units");
+        lblUnits.setHorizontalAlignment(SwingConstants.LEFT);
+        lblUnits.setForeground(new Color(26, 35, 126));
+        lblUnits.setFont(new Font("Bricolage Grotesque", Font.PLAIN, 30));
+        lblUnits.setBounds(155, 293, 245, 59);
+        panel_1.add(lblUnits);
+
+        txtUnits = new JTextField();
+        txtUnits.setHorizontalAlignment(SwingConstants.LEFT);
+        txtUnits.setForeground(new Color(26, 35, 126));
+        txtUnits.setFont(new Font("Bricolage Grotesque", Font.PLAIN, 30));
+        txtUnits.setColumns(10);
+        txtUnits.setBounds(410, 301, 696, 43);
+        panel_1.add(txtUnits);
+
+        
+        JLabel lblPrerequisite = new JLabel("Prerequisite");
+        lblPrerequisite.setHorizontalAlignment(SwingConstants.LEFT);
+        lblPrerequisite.setForeground(new Color(26, 35, 126));
+        lblPrerequisite.setFont(new Font("Bricolage Grotesque", Font.PLAIN, 30));
+        lblPrerequisite.setBounds(155, 361, 234, 59);
+        panel_1.add(lblPrerequisite);
+
+        txtPrerequisite = new JTextField();
+        txtPrerequisite.setHorizontalAlignment(SwingConstants.LEFT);
+        txtPrerequisite.setForeground(new Color(26, 35, 126));
+        txtPrerequisite.setFont(new Font("Bricolage Grotesque", Font.PLAIN, 30));
+        txtPrerequisite.setColumns(10);
+        txtPrerequisite.setBounds(410, 369, 696, 43);
+        panel_1.add(txtPrerequisite);
+
+        
+        JLabel lblCategory = new JLabel("Category");
+        lblCategory.setHorizontalAlignment(SwingConstants.LEFT);
+        lblCategory.setForeground(new Color(26, 35, 126));
+        lblCategory.setFont(new Font("Bricolage Grotesque", Font.PLAIN, 30));
+        lblCategory.setBounds(155, 421, 245, 59);
+        panel_1.add(lblCategory);
+
+        txtCategory = new JTextField();
+        txtCategory.setHorizontalAlignment(SwingConstants.LEFT);
+        txtCategory.setForeground(new Color(26, 35, 126));
+        txtCategory.setFont(new Font("Bricolage Grotesque", Font.PLAIN, 30));
+        txtCategory.setColumns(10);
+        txtCategory.setBounds(410, 429, 696, 43);
+        panel_1.add(txtCategory);
+
+        
+        JLabel lblProgram = new JLabel("Program");
+        lblProgram.setHorizontalAlignment(SwingConstants.LEFT);
+        lblProgram.setForeground(new Color(26, 35, 126));
+        lblProgram.setFont(new Font("Bricolage Grotesque", Font.PLAIN, 30));
+        lblProgram.setBounds(155, 481, 245, 59);
+        panel_1.add(lblProgram);
+
+        cmbProgram = new JComboBox<>();
+        cmbProgram.setFont(new Font("Bricolage Grotesque", Font.PLAIN, 30));
+        cmbProgram.setBounds(410, 489, 696, 43);
+        loadPrograms(); 
+        panel_1.add(cmbProgram);
+
+     
+        JButton btnCancel = new JButton("Cancel");
+        btnCancel.setOpaque(true);
+        btnCancel.setForeground(Color.WHITE);
+        btnCancel.setFont(new Font("Bricolage Grotesque", Font.BOLD, 30));
+        btnCancel.setFocusPainted(false);
+        btnCancel.setContentAreaFilled(true);
+        btnCancel.setBorderPainted(false);
+        btnCancel.setBackground(new Color(26, 35, 126));
+        btnCancel.setBounds(338, 600, 241, 52); 
+        btnCancel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                dispose();
+                new SubjectManagement().setVisible(true);
+            }
+        });
+        panel_1.add(btnCancel);
+
+        
+        JButton btnSubmit = new JButton("Submit");
+        btnSubmit.setOpaque(true);
+        btnSubmit.setForeground(Color.WHITE);
+        btnSubmit.setFont(new Font("Bricolage Grotesque", Font.BOLD, 30));
+        btnSubmit.setFocusPainted(false);
+        btnSubmit.setContentAreaFilled(true);
+        btnSubmit.setBorderPainted(false);
+        btnSubmit.setBackground(new Color(26, 35, 126));
+        btnSubmit.setBounds(660, 600, 241, 52); 
+        btnSubmit.addActionListener(e -> {
+            
+            saveSubject();
+        });
+        panel_1.add(btnSubmit);
+
+        
+        addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent e) {
+                int width = getWidth();
+                int height = getHeight();
+                panel.setBounds(0, 0, width, height);
+                int panelWidth = (int) (width * 0.8);
+                int panelHeight = (int) (height * 0.85);
+                int panelX = (width - panelWidth) / 2;
+                int panelY = (height - panelHeight) / 2;
+                panel_1.setBounds(panelX, panelY, panelWidth, panelHeight);
+            }
+        });
+    }
+
+    private void loadPrograms() {
+        try (Connection conn = DBConnection.getConnection()) {
+            String query = "SELECT program_name FROM programs";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                String programName = rs.getString("program_name");
+                cmbProgram.addItem(programName); 
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error loading programs: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void saveSubject() {
+        String subjectName = txtSubjectName.getText().trim();
+        String subjectCode = txtSubjectCode.getText().trim();
+        String units = txtUnits.getText().trim();
+        String prerequisite = txtPrerequisite.getText().trim();
+        String category = txtCategory.getText().trim();
+        String selectedProgram = (String) cmbProgram.getSelectedItem();
+
+        
+        if (subjectName.isEmpty() || subjectCode.isEmpty() || units.isEmpty() || prerequisite.isEmpty() || category.isEmpty() || selectedProgram == null) {
+            JOptionPane.showMessageDialog(this, "Please fill in all fields.", "Input Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        
+        try (Connection conn = DBConnection.getConnection()) {
+            String query = "INSERT INTO subjects (subject_name, subject_code, units, prerequisite, category, program_id) VALUES (?, ?, ?, ?, ?, (SELECT program_id FROM programs WHERE program_name = ?))";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, subjectName);
+            stmt.setString(2, subjectCode);
+            stmt.setString(3, units);
+            stmt.setString(4, prerequisite);
+            stmt.setString(5, category);
+            stmt.setString(6, selectedProgram);
+
+            int rowsInserted = stmt.executeUpdate();
+            if (rowsInserted > 0) {
+                JOptionPane.showMessageDialog(this, "Subject added successfully!");
+                dispose();
+                new SubjectManagement().setVisible(true); 
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error saving subject: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+}

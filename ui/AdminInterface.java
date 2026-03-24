@@ -1,0 +1,151 @@
+package ui;
+
+import java.awt.*;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.io.File;
+
+public class AdminInterface extends JFrame {
+
+    private static final long serialVersionUID = 1L;
+    private JPanel contentPane;
+    private Font poppinsBold;
+    private Font poppinsRegular;
+    private Font poppinsMedium;
+
+    public static void main(String[] args) {
+        EventQueue.invokeLater(() -> {
+            try {
+                AdminInterface frame = new AdminInterface();
+                frame.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    public AdminInterface() {
+        
+        try {
+            poppinsRegular = Font.createFont(Font.TRUETYPE_FONT, new File("src/fonts/Poppins-Regular.ttf")).deriveFont(22f);
+            poppinsMedium = Font.createFont(Font.TRUETYPE_FONT, new File("src/fonts/Poppins-Medium.ttf")).deriveFont(26f);
+            poppinsBold = Font.createFont(Font.TRUETYPE_FONT, new File("src/fonts/Poppins-Bold.ttf")).deriveFont(60f);
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(poppinsRegular);
+            ge.registerFont(poppinsMedium);
+            ge.registerFont(poppinsBold);
+        } catch (Exception e) {
+            System.out.println("Font loading failed, using default fonts.");
+            poppinsRegular = new Font("SansSerif", Font.PLAIN, 22);
+            poppinsMedium = new Font("SansSerif", Font.BOLD, 26);
+            poppinsBold = new Font("SansSerif", Font.BOLD, 60);
+        }
+
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setExtendedState(JFrame.MAXIMIZED_BOTH); 
+
+        contentPane = new JPanel(null);
+        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+        setContentPane(contentPane);
+
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+        
+        JPanel panel = new JPanel(null);
+        panel.setBackground(new Color(26, 35, 126));
+        panel.setBounds(0, 0, screenSize.width, screenSize.height);
+        contentPane.add(panel);
+
+        
+        int panelWidth = (int) (screenSize.width * 0.6);
+        int panelHeight = (int) (screenSize.height * 0.75);
+        int panelX = (screenSize.width - panelWidth) / 2;
+        int panelY = (screenSize.height - panelHeight) / 2;
+
+        JPanel panel_1 = new JPanel(null);
+        panel_1.setBackground(Color.WHITE);
+        panel_1.setBounds(panelX, panelY, panelWidth, panelHeight);
+        panel.add(panel_1);
+
+        
+        JLabel lblWelcomeName = new JLabel("Welcome, Admin!");
+        lblWelcomeName.setHorizontalAlignment(SwingConstants.CENTER);
+        lblWelcomeName.setForeground(new Color(26, 35, 126));
+        lblWelcomeName.setFont(poppinsBold.deriveFont(50f));
+        lblWelcomeName.setBounds(0, 40, panelWidth, 60);
+        panel_1.add(lblWelcomeName);
+
+        
+        int btnWidth = (int) (panelWidth * 0.7);
+        int btnHeight = 60;
+        int btnX = (panelWidth - btnWidth) / 2;
+        int gap = 20;
+
+        
+        int totalButtons = 6;
+        int totalHeight = totalButtons * btnHeight + (totalButtons - 1) * gap;
+        int startY = (panelHeight - totalHeight) / 2 + 20; 
+
+        
+        JButton btnTeacherManagement = createStyledButton("Teacher Management");
+        btnTeacherManagement.setBounds(btnX, startY, btnWidth, btnHeight);
+        panel_1.add(btnTeacherManagement);
+        btnTeacherManagement.addActionListener(e -> {
+            dispose();
+            new TeacherManagement().setVisible(true);
+        });
+
+        JButton btnClassroomManagement = createStyledButton("Classroom Management");
+        btnClassroomManagement.setBounds(btnX, startY + (btnHeight + gap), btnWidth, btnHeight);
+        panel_1.add(btnClassroomManagement);
+        btnClassroomManagement.addActionListener(e -> {
+            dispose();
+            new classroomManagement().setVisible(true);
+        });
+
+        JButton btnSubjectAndDegree = createStyledButton("Subject and Degree Management");
+        btnSubjectAndDegree.setBounds(btnX, startY + 2 * (btnHeight + gap), btnWidth, btnHeight);
+        panel_1.add(btnSubjectAndDegree);
+        btnSubjectAndDegree.addActionListener(e -> {
+            dispose();
+            new SubjectAndDegreeManagementInterface().setVisible(true);
+        });
+
+        JButton btnScheduleCreation = createStyledButton("Schedule Creation and Validation");
+        btnScheduleCreation.setBounds(btnX, startY + 3 * (btnHeight + gap), btnWidth, btnHeight);
+        panel_1.add(btnScheduleCreation);
+        btnScheduleCreation.addActionListener(e -> {
+            dispose();
+            new Scheduling().setVisible(true);
+        });
+
+        JButton btnStudentTimetable = createStyledButton("Student Timetable Generation");
+        btnStudentTimetable.setBounds(btnX, startY + 4 * (btnHeight + gap), btnWidth, btnHeight);
+        panel_1.add(btnStudentTimetable);
+        btnStudentTimetable.addActionListener(e -> {
+            dispose();
+            new StudentTimetable().setVisible(true);
+        });
+
+        JButton btnExit = createStyledButton("Log Out");
+        btnExit.setBounds(btnX, startY + 5 * (btnHeight + gap), btnWidth, btnHeight);
+        btnExit.setBackground(new Color(26, 35, 126));
+        btnExit.addActionListener(e -> {
+        	dispose();
+            new LogInPage().setVisible(true);
+        });
+        panel_1.add(btnExit);
+    }
+
+    private JButton createStyledButton(String text) {
+        JButton btn = new JButton(text);
+        btn.setFont(poppinsBold.deriveFont(30f));
+        btn.setForeground(Color.WHITE);
+        btn.setBackground(new Color(26, 35, 126));
+        btn.setFocusPainted(false);
+        btn.setBorderPainted(false);
+        btn.setOpaque(true);
+        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        return btn;
+    }
+}
